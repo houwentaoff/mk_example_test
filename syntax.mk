@@ -1,5 +1,12 @@
-#:set syntax=make
+#vim syntax=make
 default:all
+
+DIRS := $(shell for d in `ls`; \
+			do \
+				[ -d $$d ] &&  \
+				echo -n "$$d "; \
+			done \
+)	
 all:
 ## mk function
 define INFO
@@ -14,6 +21,11 @@ ifndef TOP_DIR
 endif
 # 用include来插入其它mk文件
 -include env.mk
+shell:
+	echo $(DIRS)
+	-@$(foreach d,$(DIRS),ls -l  $d) #foreach 返回 字符串， 此句运行 是有错误的
+	echo "foreach"
+	-@$(foreach d,`ls`, $(MAKE) -C   $d all) #foreach 返回 字符串， 此句 运行是错误的
 #compile
 #
 #-Wl,-rpath选项则是指定运行编译时ld的搜索路径,指定后即可以用ldd a.out看见各个共享库的路径用readelf -d a.out可以看到多了一个（RPATH）的选项，即是共享动态库的路径
