@@ -18,6 +18,8 @@ SUBDIRS=src example
 ifndef TOP_DIR
 	# 用shell函数获取绝对路径
 	TOP_DIR = $(dir $(shell pwd)/../)
+	# abspath 获取绝对路径
+	TOP1_DIR = $(abspath $(shell pwd)/../)
 endif
 # 用include来插入其它mk文件
 -include env.mk
@@ -33,7 +35,8 @@ shell:
 #
 #1. 编译.so时若要将其他.a编译进去不能使用-l进行链接，这是无效的，只有编译执行程序时才是有效的
 install:
-	echo $(TOP_DIR)
+	echo "top dir " $(TOP_DIR)
+	echo "top1 dir " $(TOP1_DIR)
 	# $(call) 和 $()均可以直接调用函数
 	$(call, INFO .vimrc)
 	$(INFO .vimrc)
