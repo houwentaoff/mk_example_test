@@ -1,5 +1,7 @@
 #vim syntax=make
 default:all
+## 在make 的时候执行的shell命令
+$(shell mkdir -p /tmp/aa/bb/cc )
 
 DIRS := $(shell for d in `ls`; \
 			do \
