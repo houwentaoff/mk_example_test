@@ -49,7 +49,7 @@ install:
 main: main.o
 	gcc $< -o $@ -L./ -ltest  #-L指定目录，-l指定库名字
 
-libtest.so (a.o b.o) : a.o b.o #.so和后面的'('之间一定要有空格
+libtest.a (a.o b.o) : a.o b.o #.so和后面的'('之间一定要有空格
 
 	@echo '$$% = '$% #仅当目标是函数库文件中,表示规则中的目标成员名 扩展时只有一个文件
 
@@ -65,7 +65,7 @@ libtest.so (a.o b.o) : a.o b.o #.so和后面的'('之间一定要有空格
 
 	@echo '$$< = '$< #依赖目标中的第一个目标名字 扩展时只有一个文件
 
-	ar cr $@ $?
+	ar cr $@ $? # ar cr 是打包为静态库，不是动态库
 
 %.o:%.c 
 	gcc -c  $<  -o $@
