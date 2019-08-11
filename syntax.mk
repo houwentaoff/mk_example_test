@@ -1,6 +1,8 @@
 #vim syntax=make
 default:all
 
+AAA:=1
+
 DIRS := $(shell for d in `ls`; \
 			do \
 				[ -d $$d ] &&  \
@@ -12,6 +14,13 @@ all:
 define INFO
 	-@echo  "\033[32m install $(1)  ... \033[0m"
 endef
+
+ifeq:
+ifeq ($(AAA), 1)
+	echo $(AAA)	
+else ifeq ($(AAA), 2)
+	echo $(AAA)
+endif
 
 SUBDIRS=src example
 # 用ifnef来判断变量是否定义
