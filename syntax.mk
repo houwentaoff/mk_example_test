@@ -76,9 +76,12 @@ libtest.a (a.o b.o) : a.o b.o #.so和后面的'('之间一定要有空格
 
 	ar cr $@ $? # ar cr 是打包为静态库，不是动态库
 
+libtest.so:a.o b.o
+	gcc -shared $? -o $@ #打包为动态库
+
 %.o:%.c 
-	gcc -c  $<  -o $@
+	gcc -c -fPIC $<  -o $@ # -fPIC 参数 便于生成动态库.so,否则会出现 can not be used when making a shared object; recompile with -fPIC 这种错误提示
 # 打so.和.a参考libgpio的工程
 .PHONY:clean
 clean:
-	-rm *.o testlib *.so
+	-rm *.o  *.so *.a  -rf
