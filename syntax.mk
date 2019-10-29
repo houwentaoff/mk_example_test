@@ -1,5 +1,7 @@
 #vim syntax=make
-default:all
+#CFLAGS := -D MAX_NUM=12
+#CFLAGS += -D USE_A 
+default:all #此处若为变量则需要在default之前定义否则此处解析时为空
 ## 在make 的时候执行的shell命令
 $(shell mkdir -p /tmp/aa/bb/cc )
 
