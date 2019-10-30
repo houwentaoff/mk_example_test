@@ -2,10 +2,10 @@ SUBDIRS=src example
 
 ifndef TOP_DIR
 TOP_DIR=$(abspath $(shell pwd))
-export TOP_DIR
+#export TOP_DIR
 endif
 
-include env.mk
+#include env.mk
 
 all:
 	-@echo  "\033[32m Building libgpio module ... \033[0m"

@@ -1,9 +1,10 @@
+NAME1=test_gpio
 default:all
 
-all:tips test_gpio
+all:tips $(NAME1)
 
 tips:
-	-@echo  "\033[32m Building gpio example ... \033[0m"
+	-@echo  "\033[32m Building example ... \033[0m"
 
 ifndef TOP_DIR
 TOP_DIR = $(shell pwd)/../../
@@ -11,15 +12,11 @@ endif
 
 include ../env.mk
 
-INC+= -I../include
+#CFLAGS+=-I./
+LDFLAGS+=-L../lib -lgpio
 
-LD:= -L../lib -lgpio
-
-CFLAGS+=$(INC)
-LDFLAGS+=$(LD)
-
-test_gpio:test.o
-	$(Q)$(CC) $^ -o $@ $(LD)
+$(NAME1):test.o
+	$(Q)$(CC) $^ -o $@ $(LDFLAGS)
 	@$(E) "  Gen " $@
 
 %.o:%.c
@@ -27,7 +24,7 @@ test_gpio:test.o
 	@$(E) "  CC " $<
 
 clean:
-	-@$(RM) *.o test_gpio
+	-@$(RM) *.o $(NAME1)
 
 install:
 	-@echo ""

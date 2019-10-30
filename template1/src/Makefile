@@ -1,12 +1,12 @@
+NAME=libgpio
 default:all
 
-LIB := libgpio.a #该句要放在all之前否则all中的:$(LIB) 解析不出来
+LIB := $(NAME).a #该句要放在all之前否则all中的:$(LIB) 解析不出来
 
 all:tips $(LIB)
 
-
 tips:
-	-@echo  "\033[32m Building libgpio ... \033[0m"
+	-@echo  "\033[32m Building $(NAME) ... \033[0m"
 
 ifndef TOP_DIR
 TOP_DIR = $(abspath $(shell pwd)/../)
@@ -14,14 +14,12 @@ endif
 
 include $(TOP_DIR)/env.mk
 
-INC+= -I$(TOP_DIR)/include
+#CFLAGS+=$(INC)
+LDFLAGS+=-lpthread
+SRC-y+=gpio.c
+OBJS:=$(patsubst %.c,%.o, $(SRC-y))
 
-LD:= -lpthread
-
-CFLAGS+=$(INC)
-LDFLAGS+=$(LD)
-
-$(LIB):gpio.o 
+$(LIB):$(OBJS)
 	-@mkdir -p ../lib
 	$(Q)$(AR) cr ../lib/$@ $^ 
 	@$(E) "  AR " $^
@@ -33,10 +31,10 @@ $(LIB):gpio.o
 	@$(E) "  CC " $<
 
 clean:
-	-@$(RM) *.o *.a ../lib/*.a ../lib/*.so
+	-@$(RM) $(OBJS) *.a ../lib/$(LIB) ../lib/*.so
 
 install:
-	-@install -v ../lib/*.a $(DST_DIR)
+	-@install -v ../lib/$(LIB) $(DST_DIR)
 	-@install -v ../lib/*.so $(DST_DIR)
 
 .PHONY:clean
