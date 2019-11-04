@@ -1,8 +1,10 @@
+#
+# library name
+#
 NAME=libgpio
-default:all
-
 LIB := $(NAME).a #该句要放在all之前否则all中的:$(LIB) 解析不出来
 
+default:all
 all:tips $(LIB)
 
 tips:
@@ -13,28 +15,30 @@ TOP_DIR = $(abspath $(shell pwd)/../)
 endif
 
 include $(TOP_DIR)/env.mk
+# build flags
+CFLAGS += -D _GNU_SOURCE
 
-#CFLAGS+=$(INC)
-LDFLAGS+=-lpthread
-SRC-y+=gpio.c
-OBJS:=$(patsubst %.c,%.o, $(SRC-y))
+CONFIG_RTE_LIBRTE_PMD_CAAM_JR=y
+SRCS-$(CONFIG_RTE_LIBRTE_PMD_CAAM_JR) += gpio.c
+#SRCS-$(CONFIG_RTE_LIBRTE_PMD_CAAM_JR) += a.c
+OBJS:=$(patsubst %.c,%.o, $(SRCS-y))
 
 $(LIB):$(OBJS)
-	-@mkdir -p ../lib
-	$(Q)$(AR) cr ../lib/$@ $^ 
+	-@mkdir -p $(TOP_DIR)/lib
+	$(Q)$(AR) cr $(TOP_DIR)/lib/$@ $^ 
 	@$(E) "  AR " $^
 	$(Q)$(CC) -shared -fPIC -o ../lib/libgpio.so $^
 	@$(E) "  Shared " $^
 
 %.o:%.c
-	$(Q)$(CC) -g -c $(CFLAGS) $< -o $@
+	$(Q)$(CC) -c $(CFLAGS) $< -o $@
 	@$(E) "  CC " $<
 
 clean:
-	-@$(RM) $(OBJS) *.a ../lib/$(LIB) ../lib/*.so
+	-@$(RM) $(OBJS) *.a $(TOP_DIR)/lib/$(LIB) $(TOP_DIR)/lib/*.so
 
 install:
-	-@install -v ../lib/$(LIB) $(DST_DIR)
-	-@install -v ../lib/*.so $(DST_DIR)
+	-@install -v $(TOP_DIR)/lib/$(LIB) $(DST_DIR)
+	-@install -v $(TOP_DIR)/lib/*.so $(DST_DIR)
 
 .PHONY:clean
