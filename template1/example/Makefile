@@ -1,19 +1,23 @@
 NAME1=test_gpio
+
 default:all
 
 all:tips $(NAME1)
 
 tips:
-	-@echo  "\033[32m Building example ... \033[0m"
+	-@echo  "\033[32m Building $(NAME1) example ... \033[0m"
 
 ifndef TOP_DIR
-TOP_DIR = $(shell pwd)/../../
+TOP_DIR=$(abspath $(shell pwd)/../)
 endif
 
-include ../env.mk
+include $(TOP_DIR)/env.mk
 
 #CFLAGS+=-I./
-LDFLAGS+=-L../lib -lgpio
+LDFLAGS += -Wl,--whole-archive #强制将符号加入最后的执行文件中否则会被编译器优化
+LDFLAGS += -L$(TOP_DIR)/lib -lgpio
+LDFLAGS += -Wl,--no-whole-archive
+LDFLAGS += -lpthread -ldl
 
 $(NAME1):test.o
 	$(Q)$(CC) $^ -o $@ $(LDFLAGS)
@@ -26,7 +30,9 @@ $(NAME1):test.o
 clean:
 	-@$(RM) *.o $(NAME1)
 
+
 install:
 	-@echo ""
+	install -v $(NAME1) /opt/
 
-.PHONY:clean
+.PHONY:clean $(NAME1)
