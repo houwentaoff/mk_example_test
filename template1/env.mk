@@ -24,3 +24,5 @@ else
 endif
 
 export CC AR 
+
+include $(TOP_DIR)/common.mk

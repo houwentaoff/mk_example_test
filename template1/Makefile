@@ -18,4 +18,9 @@ clean:
 install:
 	for d in $(SUBDIRS); do [ -d $$d ] && $(MAKE) -C $$d install; done
 
+printvars:
+	@$(foreach V,$(sort $(.VARIABLES)), \
+		$(if $(filter-out environment% default automatic, \
+		$(origin $V)),$(warning $V=$($V) ($(value $V)))))
+
 .PHONY:clean
