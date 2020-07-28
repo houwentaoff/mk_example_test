@@ -20,9 +20,16 @@ define INFO
 endef
 
 ifeq:
+#make -f syntax.mk ifeq AAA=PLANTFORM_B 这样进行测试
+# ifeq A 或者 B的用法, 用于多个平台
+ifeq ($(AAA), $(filter PLANTFORM_A PLANTFORM_B, $(AAA)))
+	echo "a b" $(AAA)
+endif
 ifeq ($(AAA), 1)
 	echo $(AAA)	
 else ifeq ($(AAA), 2)
+	echo $(AAA)
+else ifeq ($(AAA), 3)
 	echo $(AAA)
 endif
 
