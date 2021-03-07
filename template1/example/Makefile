@@ -15,7 +15,7 @@ include $(TOP_DIR)/env.mk
 
 #CFLAGS+=-I./
 LDFLAGS += -Wl,--whole-archive #强制将符号加入最后的执行文件中否则会被编译器优化
-LDFLAGS += -L$(TOP_DIR)/lib -lgpio
+LDFLAGS += -L$(TOP_DIR)/lib -Wl,-Bstatic -lgpio -Wl,-Bdynamic 
 LDFLAGS += -Wl,--no-whole-archive
 LDFLAGS += -lpthread -ldl
 
@@ -33,6 +33,6 @@ clean:
 
 install:
 	-@echo ""
-	install -v $(NAME1) /opt/
+	install -D -v $(NAME1) /opt/
 
 .PHONY:clean $(NAME1)
