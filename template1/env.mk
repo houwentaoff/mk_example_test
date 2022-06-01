@@ -13,7 +13,7 @@ CFLAGS += -D RTE_FORCE_INTRINSICS=y
 CFLAGS += -g
 
 CFLAGS += -I$(TOP_DIR)/include
-#CFLAGS += --define-ABC   ABC=string #该句语法错误
+CFLAGS +=   -DABC=\"string\" #宏可以传递字符串
 V := 1
 ifeq ($(V), 1)
 	Q=
